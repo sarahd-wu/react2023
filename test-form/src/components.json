@@ -1,0 +1,21 @@
+{
+    "components": [
+    { 
+        "title": "Title",
+        "description": "Holyoke's Collection",
+        "subcomponents": {
+            "title": "Subtitle",
+            "description": "I am the subtext hello",
+            "subcomponents": []
+        }
+    },
+    { 
+        "title": "Abstract",
+        "description": "Sample text"
+    },
+    { 
+        "title": "Title",
+        "description": "Sample text"
+    }
+]
+}
