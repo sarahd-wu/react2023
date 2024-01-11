@@ -7,17 +7,20 @@ function ContentList(props) {
   const {
     label = 'Default Key',
     title = 'Default Title',
-    description = 'Default Description',
-    component = null,
     subcomponents = [],
-    level = 1
+    level = 1,
+    index,
+    updateJson
   } = props;
+
+  const jsonProps = { index, updateJson };
 
   if (label.includes("Series") && !label.includes("Series Description")) {
 
     return (
       <div>
-        <Heading text={label + ": " + title} size={level} />
+        {/* <Heading text={label + ": " + title} size={level} {...jsonProps}/> */}
+        <Heading text={title} size={level} {...jsonProps}/>
         <table>
           <thead>
             <tr>
@@ -32,16 +35,16 @@ function ContentList(props) {
             {Object.entries(subcomponents).map(([subcomponentKey, subcomponent]) => (
               <tr key={subcomponentKey}>
                 {/* Additional cells for Date, Box, Folder */}
-                <td><Text text={subcomponent["Title"]} /></td>
-                <td><Text text={subcomponent["Date"]} /></td>
-                <td><Text text={subcomponent["Box"]} /></td>
-                <td><Text text={subcomponent["Folder"]} /></td>
+                <td><Text text={subcomponent["Title"]} label = "Title" {...jsonProps}/></td>
+                <td><Text text={subcomponent["Date"]} label = "Date" {...jsonProps}/></td>
+                <td><Text text={subcomponent["Box"]} label = "Box" {...jsonProps}/></td>
+                <td><Text text={subcomponent["Folder"]} label = "Folder" {...jsonProps}/></td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <ul>
+        <ol>
                 {Object.entries(subcomponents)
                     .filter(([subcomponentKey]) => !subcomponentKey.includes("Item"))
                     .map(([subcomponentKey, subcomponent]) => (
@@ -52,17 +55,18 @@ function ContentList(props) {
                             description={subcomponent["Content"]}
                             subcomponents={subcomponent["Subcomponents"]}
                             level={level + 1}
+                            {...jsonProps}
                         />
                     </li>
                 ))}
-        </ul>
+        </ol>
         
       </div>
     ); }
 
     if (label.includes("Series Description")) {
         return(
-        <ul>
+        <ol>
                 {Object.entries(subcomponents)
                     .filter(([subcomponentKey]) => !subcomponentKey.includes("Item"))
                     .map(([subcomponentKey, subcomponent]) => (
@@ -73,10 +77,11 @@ function ContentList(props) {
                             description={subcomponent["Content"]}
                             subcomponents={subcomponent["Subcomponents"]}
                             level={level + 1}
+                            {...jsonProps}
                         />
                     </li>
                 ))}
-        </ul>
+        </ol>
         )
     }
 

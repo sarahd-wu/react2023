@@ -12,6 +12,9 @@ function Paragraph(props) {
           content={paragraphText}
           setContent={setParagraphText}
           className="text"
+          index = {props.index}
+          updateJson = {props.updateJson}
+          label = {props.label}
         />
       </div>
     );

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 function EditableContent(props) {
-  const { content = 'Default', setContent = 'Default', className = "Text" } = props;
+  //updateJson allows the original component (the original json file) to be changed when edited
+  const { content = 'Default', setContent = 'Default', className = "Text", index, label, updateJson} = props;
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef(null);
 
@@ -17,6 +18,7 @@ function EditableContent(props) {
     // Check if the click is outside the currently edited textarea
     if (textareaRef.current && !textareaRef.current.contains(event.target)) {
       setIsEditing(false);
+      updateJson(index, event.target.value, label)
     }
   };
 

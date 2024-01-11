@@ -14,16 +14,25 @@ function Item(props) {
           content={dateText}
           setContent={setDateText}
           className="text"
+          index = {props.index}
+          updateJson = {props.updateJson}
+          label = "Date"
         />
         <EditableContent
           content={boxText}
           setContent={setBoxText}
           className="text"
+          index = {props.index}
+          updateJson = {props.updateJson}
+          label = "Box"
         />
         <EditableContent
           content={folderText}
           setContent={setFolderText}
           className="text"
+          index = {props.index}
+          updateJson = {props.updateJson}
+          label = "Folder"
         />
       </div>
     );

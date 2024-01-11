@@ -4,17 +4,20 @@ import Heading from './Heading.js';
 
 function Component(props) {
     const {
-        label = 'Default Key',
         title = 'Default Title',
         description = 'Default Description',
         subcomponents = [],
-        level = 1
+        level = 1,
+        index,
+        updateJson
     } = props;
+
+    const jsonProps = { index, updateJson };
     
         return (
         <div>
-            <Heading text={title} size={level} />
-            <Text text={description} />
+            <Heading text={props.title} size={level} {...jsonProps} />
+            <Text text={description} {...jsonProps} label = "Content" />
 
             {/* list of subcomponents*/}
             <ul>
@@ -23,11 +26,11 @@ function Component(props) {
                     .map(([subcomponentKey, subcomponent]) => (
                     <li key={subcomponentKey}>
                         <Component
-                            label={subcomponentKey}
                             title={subcomponent["Title"]}
                             description={subcomponent["Content"]}
                             subcomponents={subcomponent["Subcomponents"]}
                             level={level + 1}
+                            {...jsonProps}
                         />
                     </li>
                 ))}

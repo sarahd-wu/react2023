@@ -40,6 +40,16 @@ function App(props) {
     });
   };
 
+  const updateJson = (index, newTitle, key) => {
+    setComponents((prevComponents) => {
+      const updatedComponents = { ...prevComponents };
+      const componentKey = Object.keys(updatedComponents)[index];
+      console.log(key)
+      updatedComponents[componentKey][key] = newTitle;
+      return updatedComponents;
+    });
+  };
+
   const downloadJsonFile = () => {
     if (!components) {
       console.error('No components data to download.');
@@ -81,6 +91,8 @@ function App(props) {
                 description={content}
                 subcomponents={subcomponents}
                 level={1}
+                index={index}
+                updateJson={updateJson}
               />
 
               {hoveredIndex === index && (
@@ -116,6 +128,8 @@ function App(props) {
                 subcomponents={subcomponents}
                 component = {component}
                 level={2}
+                index={index}
+                updateJson={updateJson}
               />
 
               {hoveredIndex === index && (
