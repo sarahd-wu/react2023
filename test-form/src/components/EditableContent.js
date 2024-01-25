@@ -12,13 +12,13 @@ function EditableContent(props) {
 
   const handleContentChange = (event) => {
     setContent(event.target.value);
+    updateJson(index, event.target.value, label)
   };
 
   const handleClickOutside = (event) => {
     // Check if the click is outside the currently edited textarea
     if (textareaRef.current && !textareaRef.current.contains(event.target)) {
       setIsEditing(false);
-      updateJson(index, event.target.value, label)
     }
   };
 

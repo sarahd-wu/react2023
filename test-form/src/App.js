@@ -18,7 +18,7 @@ function App(props) {
     const newComponent = {
       Title: "New Component",
       Content: "New Content",
-      Subcomponents: []
+      Subcomponents: {}
     };
 
     // Update the state with the new component inserted at the specified index
@@ -40,12 +40,40 @@ function App(props) {
     });
   };
 
+
+  const makeSubcomponent = (index) => {
+    if (index !== null && index > 0) {
+      setComponents((prevComponents) => {
+        const newComponents = { ...prevComponents };
+  
+        // Get the selected component and the one above it
+        const selectedKey = Object.keys(newComponents)[index];
+        const aboveKey = Object.keys(newComponents)[index - 1];
+  
+        // Make a copy of the selected component
+        const selectedComponent = { ...newComponents[selectedKey] };
+  
+        // Remove the selected component from the top level
+        delete newComponents[selectedKey];
+  
+        // Make it a subcomponent of the component above
+        newComponents[aboveKey].Subcomponents = newComponents[aboveKey].Subcomponents || {};
+        newComponents[aboveKey].Subcomponents[selectedKey] = selectedComponent;
+  
+        return newComponents;
+      });
+    }
+  };
+
   const updateJson = (index, newTitle, key) => {
     setComponents((prevComponents) => {
       const updatedComponents = { ...prevComponents };
       const componentKey = Object.keys(updatedComponents)[index];
-      console.log(key)
+      // console.log(updatedComponents[componentKey][key])
       updatedComponents[componentKey][key] = newTitle;
+
+      // console.log(updatedComponents)
+
       return updatedComponents;
     });
   };
@@ -73,6 +101,7 @@ function App(props) {
 
       {components &&
         Object.keys(components).map((componentKey, index) => {
+
           const component = components[componentKey];
           const title = component["Title"];
           const content = component["Content"];
@@ -96,10 +125,15 @@ function App(props) {
               />
 
               {hoveredIndex === index && (
-                <button onClick={() => addNewComponent(index + 1)}> Add New Component </button>
+                <div>
+                  <button onClick={() => addNewComponent(index + 1)}> Add New Component </button>
+                  <button onClick={() => makeSubcomponent(index)}> Make Subcomponent </button>
+                </div>
               ) }
+
               
             </div>
+            
           );
         })}
         
@@ -107,11 +141,13 @@ function App(props) {
     <div>
         <h1>Content List</h1>
         { components &&
-          Object.keys(components).map((componentKey, index) => {
+          Object.keys(components).map((componentKey, index_int) => {
             const component = components[componentKey];
             const title = component["Title"];
             const content = component["Content"];
             const subcomponents = component["Subcomponents"];
+
+            const index = parseFloat(index_int)
 
             // Customize the rendering for the "Content List" section
             return (
@@ -133,14 +169,15 @@ function App(props) {
               />
 
               {hoveredIndex === index && (
-                <button onClick={() => addNewComponent(index + 1)}> Add New Component </button>
+                <div>
+                  <button onClick={() => addNewComponent(index + 1)}> Add New Component </button>
+                </div>
               ) }
               
             </div>
             );
           })}
         </div>
-
     </div>
   );
 }
