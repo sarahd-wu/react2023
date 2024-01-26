@@ -11,7 +11,14 @@
             "Subcomponents": {
                 "Terms of Access and Use": {
                     "Title": "Terms of Access and Use",
-                    "Content": "The collection is open for research"
+                    "Content": "The collection is open for research",
+                    "Subcomponents": {
+                        "Testing #3": {
+                            "Title": "Testing",
+                            "Content": "Testing",
+                            "Subcomponents": {}
+                        }
+                    }
                 }
             }
         },
