@@ -8,33 +8,54 @@ function Component(props) {
         title = '',
         description = '',
         subcomponents = {},
-        parentTree = {},
         level = 1,
-        setSubcomponentsArray,
+        onDelete // Callback to handle delete action
     } = props;
 
     const [isHovered, setIsHovered] = useState(false);
+    const [currentSubcomponents, setSubcomponents] = useState(subcomponents);
 
-    const addComponent = () => {
-        // Create a new subcomponent
-        const newSubcomponent = {
-            componentKey: 'Default',
-            Title: 'Default',
-            Content: 'Default',
-            Subcomponents: {},
-
+    const addNewComponent = () => {
+        // Assuming your new component data is entered through some UI form
+        const newComponent = {
+            Title: "New Component",
+            Content: "New Content",
+            Subcomponents: {}
         };
 
-        // Update the subcomponents array using the callback function from props
-        if (setSubcomponentsArray) {
-            setSubcomponentsArray((prevSubcomponents) => [
-                ...prevSubcomponents,
-                newSubcomponent
-            ]);
-        }
+        // Update the subcomponents array of the current component
+        setSubcomponents({
+            ...currentSubcomponents,
+            [generateUniqueKey()]: newComponent,
+        });
+    };
 
-        // Return the new subcomponent to the caller (parent or child component)
-        return newSubcomponent;
+    const handleDelete = (subcomponentKey) => {
+        // Check if the componentKey exists in components
+        if (!(subcomponentKey in currentSubcomponents)) {
+            return;
+        } else {
+            // Copy the current state and delete the specified componentKey
+            const updatedSubcomponents = { ...currentSubcomponents };
+            delete updatedSubcomponents[subcomponentKey];
+            setSubcomponents(updatedSubcomponents);
+        }
+    };
+
+    const deleteComponent = () => {
+        // Callback to handle delete action
+        onDelete(componentKey);
+    };
+
+    const generateUniqueKey = () => {
+        // Use a base string (e.g., 'componentKey') and append a timestamp for uniqueness
+        const baseString = 'componentKey';
+        const timestamp = new Date().getTime();
+    
+        // Concatenate the base string and timestamp to create a unique key
+        const uniqueKey = `${baseString}_${timestamp}`;
+    
+        return uniqueKey;
     };
 
     return (
@@ -47,7 +68,7 @@ function Component(props) {
 
             {/* List of subcomponents */}
             <ul>
-                {Object.entries(subcomponents)
+                {Object.entries(currentSubcomponents)
                     .filter(([subcomponentKey]) => !subcomponentKey.includes("Item"))
                     .map(([subcomponentKey, subcomponent]) => (
                         <li key={subcomponentKey}>
@@ -57,16 +78,17 @@ function Component(props) {
                                 title={subcomponent["Title"]}
                                 description={subcomponent["Content"]}
                                 subcomponents={subcomponent["Subcomponents"]}
-                                parentTree={subcomponent}
+                                onDelete={handleDelete}
                             />
                         </li>
                     ))}
             </ul>
 
             {isHovered && (
-                <button onClick={addComponent}>
-                    Hovered! Click me!
-                </button>
+                <div>
+                    <button onClick={addNewComponent}> New Subcomponent of {title} </button>
+                    <button onClick={deleteComponent}> Delete {title} </button>
+                </div>
             )}
         </div>
     );
