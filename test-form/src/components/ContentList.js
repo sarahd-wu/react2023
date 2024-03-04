@@ -13,7 +13,7 @@ function ContentList(props) {
     updateJson
   } = props;
 
-  const jsonProps = { index, updateJson };
+  const jsonProps = {updateJson};
 
   if (label.includes("Series") && !label.includes("Series Description")) {
 
@@ -77,6 +77,7 @@ function ContentList(props) {
                             description={subcomponent["Content"]}
                             subcomponents={subcomponent["Subcomponents"]}
                             level={level + 1}
+                            index={index.push(1)}
                             {...jsonProps}
                         />
                     </li>
